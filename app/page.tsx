@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import {
   Shield,
-  Award as IdCard,
+  UserCheck,
   MessageSquare,
   Stethoscope,
   AlertTriangle,
@@ -26,7 +26,7 @@ const categories = [
   {
     id: "identificacao",
     title: "Identificação do Paciente",
-    icon: IdCard,
+    icon: UserCheck, // Updated to UserCheck icon
     color: "bg-green-500",
     href: "/categoria/identificacao-paciente",
   },
