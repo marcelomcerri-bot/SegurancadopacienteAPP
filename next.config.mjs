@@ -14,6 +14,7 @@ const nextConfig = {
     buildActivity: false,
     buildActivityPosition: 'bottom-right',
   },
+  output: 'standalone',
 }
 
 export default nextConfig
