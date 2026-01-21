@@ -9,11 +9,21 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Re-adicionando a configuração de origem para garantir que o proxy do Replit funcione
   experimental: {
     serverActions: {
       allowedOrigins: ['*'],
     },
+  },
+  // Ensure the server can be reached through the Replit proxy
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
+    ]
   },
 }
 
