@@ -98,7 +98,7 @@ const additionalSections = [
   },
   {
     id: "reportagens",
-    title: "Reportagens",
+    title: "Reportagens e evidências científicas",
     icon: Newspaper,
     color: "bg-rose-500",
     href: "/recursos/reportagens",

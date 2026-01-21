@@ -87,7 +87,7 @@ export default function ReportagensPage() {
             <div className="bg-orange-500 p-2.5 rounded-lg text-white flex-shrink-0">
               <Newspaper className="w-6 h-6" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 break-words">Reportagens</h1>
+            <h1 className="text-2xl font-bold text-gray-800 break-words">Reportagens e evidências científicas</h1>
           </div>
           <p className="text-sm text-gray-600 leading-relaxed">Casos reais de falhas na assistência</p>
         </div>
