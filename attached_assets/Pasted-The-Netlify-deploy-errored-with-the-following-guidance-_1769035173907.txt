@@ -1,0 +1,122 @@
+The Netlify deploy errored, with the following guidance provided:
+
+Diagnosis
+
+- The Netlify build failed because Netlify blocked deployment due to a critical security vulnerability in the Next.js version used by the project. Evidence in the logs: [line 186](#L186) and the HTTP 400 upload error at [line 202](#L202). The block message is repeated at [line 204](#L204)-[line 206](#L206). You can also see the upload of the server function failed: [line 195](#L195).
+- Error type: security-blocked deployment (Netlify refuses to deploy because the repository uses a Next.js version affected by CVE referenced at https://ntl.fyi/cve-2025-55182).
+
+Solution
+
+1) Verify Next.js is declared in your repo
+- Open your package.json and confirm a next dependency is present and committed:
+  - https://github.com/marcelomcerri-bot/SegurancadopacienteAPP/blob/main/package.json
+- If next is missing from package.json, add it (see step 2). If it is present, note the version and proceed.
+
+2) Upgrade Next.js to a patched version (recommended)
+- On your local machine (matching the package manager used in the build; Netlify shows pnpm), run:
+```bash
+# using pnpm (recommended because your build uses pnpm)
+pnpm add next@latest
+# or to pick a particular patched version, e.g. pnpm add next@14.1.2
+```
+- If you use npm or yarn locally, use the corresponding command:
+```bash
+# npm
+npm install next@latest --save
+
+# yarn
+yarn add next@latest
+```
+- After upgrading, run the build locally to catch any breaking changes:
+```bash
+pnpm run build
+```
+- Commit package.json and the lockfile (pnpm-lock.yaml / package-lock.json / yarn.lock) and push to the repo:
+```bash
+git add package.json pnpm-lock.yaml
+git commit -m "chore: upgrade next to patched version to mitigate CVE"
+git push
+```
+
+3) Re-deploy on Netlify
+- Clear the Netlify build cache or trigger a fresh deploy (Netlify UI option "Clear cache and deploy" or push a new commit). This ensures Netlify uses the updated dependencies.
+- The deploy should no longer be blocked once Next.js is upgraded.
+
+4) If upgrading causes compatibility issues
+- Consult Next.js upgrade/migration guides and fix breaking changes as needed:
+  - Next.js upgrade docs: https://nextjs.org/docs/upgrading
+- If you cannot upgrade for some reason, contact Netlify support and reference https://ntl.fyi/cve-2025-55182 — however, Netlify is intentionally blocking vulnerable versions for security, so upgrading is the recommended path.
+
+
+
+The relevant error logs are:
+
+Line 0: build-image version: efa9a2c8b92d443f700fd1ea32ecd88f75212cfc (noble-new-builds)
+Line 1: buildbot version: 8d0edf1d57efe8e54d6b6b12c54da32e6d71ab3b
+Line 2: Fetching cached dependencies
+Line 3: Failed to fetch cache, continuing with build
+Line 4: Starting to prepare the repo for build
+Line 5: No cached dependencies found. Cloning fresh repo
+Line 6: git clone --filter=blob:none https://github.com/marcelomcerri-bot/SegurancadopacienteAPP
+Line 7: Preparing Git Reference refs/heads/main
+Line 8: Starting to install dependencies
+Line 9: mise [36m~/.config/mise/config.toml[0m tools: [34mpython[0m@3.14.2
+Line 10: mise [36m~/.config/mise/config.toml[0m tools: [34mruby[0m@3.4.8
+Line 11: mise [36m~/.config/mise/config.toml[0m tools: [34mgo[0m@1.25.6
+Line 12: v22.22.0 is already installed.
+Line 13: Now using node v22.22.0 (npm v10.9.4)
+Line 175: Next.js cache saved
+Line 176: [96m[1m​[22m[39m
+Line 177: [96m[1mFunctions bundling                                            [22m[39m
+Line 178: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 179: ​
+Line 180: Packaging Functions from [36m.netlify/functions-internal[39m directory:
+Line 181:  - ___netlify-server-handler/___netlify-server-handler.mjs
+Line 182: ​
+Line 183: ​
+Line 184: [90m(Functions bundling completed in 1.3s)[39m
+Line 185: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 186: 
+
+You're currently using a version of Next.js affected by a critical security vulnerability. To protect your project, we're bloc
+Line 187: [96m[1m​[22m[39m
+Line 188: [96m[1mDeploy site                                                   [22m[39m
+Line 189: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 190: ​
+Line 191: Starting to deploy site from '.next'
+Line 192: Calculating files to upload
+Line 193: 0 new file(s) to upload
+Line 194: 1 new function(s) to upload
+Line 195: Failed to upload file: ___netlify-server-handler
+Line 196: Section completed: deploying
+Line 197: [91m[1m​[22m[39m
+Line 198: [91m[1mError deploying                                               [22m[39m
+Line 199: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 200: ​
+Line 201:   [31m[1mError message[22m[39m
+Line 202:   Deploy did not succeed with HTTP Error 400: [PUT /deploys/{deploy_id}/functions/{name}][400] uploadDeployFunction default  &{C
+Line 203: ​
+Line 204:   You're currently using a version of Next.js affected by a critical security vulnerability. To protect your project, we're bloc
+Line 205: ​
+Line 206:   Refer to https://ntl.fyi/cve-2025-55182 for more information.
+Line 207: ​
+Line 208:   }
+Line 209: ​
+Line 210:   [31m[1mError location[22m[39m
+Line 211:   At deploy the stage with HTTP status code '400'
+Line 212: ​
+Line 213:   [31m[1mResolved config[22m[39m
+Line 214:   build:
+Line 215:     command: pnpm run build
+Line 216:     commandOrigin: ui
+Line 217:     publish: /opt/build/repo/.next
+Line 218:     publishOrigin: ui
+Line 219:   headers:
+Line 220:     - for: /_next/static/*
+      values:
+        Cache-Control: public, max-age=31536000, immutable
+  headersOrigin: inline
+  pl
+Line 221: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 222: Failing build: Failed to build site
+Line 223: Finished processing build request in 41.321s
