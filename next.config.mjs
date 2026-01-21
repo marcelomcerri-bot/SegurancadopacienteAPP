@@ -9,7 +9,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Disable experimental features that might be causing hang-ups
+  devIndicators: {
+    appIsrStatus: false,
+    buildActivity: false,
+    buildActivityPosition: 'bottom-right',
+  },
 }
 
 export default nextConfig
