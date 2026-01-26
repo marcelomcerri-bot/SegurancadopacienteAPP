@@ -97,12 +97,12 @@ export default function ReportagensPage() {
             <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
             <div>
               <p className="text-sm text-gray-700 mb-2">
-                Nesta seção, você encontra notícias reais sobre falhas na assistência que resultaram em danos aos
+                Nesta seção, você encontra notícias reais e evidências científicas sobre falhas na assistência que resultaram em danos aos
                 pacientes, prejuízos à credibilidade das unidades de saúde e impactos na vida dos profissionais
                 envolvidos.
               </p>
               <p className="text-sm text-gray-700 font-semibold">
-                Um espaço para refletir e aprender com situações que reforçam a importância da segurança do paciente.
+                Um espaço para refletir e aprender com situações e estudos que reforçam a importância da segurança do paciente.
               </p>
             </div>
           </div>
